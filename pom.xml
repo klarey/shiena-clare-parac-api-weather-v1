@@ -67,8 +67,20 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<version>1.7.3</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.3</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-apikit-module</artifactId>
+			<version>1.9.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
@@ -96,12 +108,17 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<!-- <dependency>
+			<version>2.1.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
 			<groupId>71865d2a-8357-4513-9655-7cbde4f36bf3</groupId>
 			<artifactId>weather-api</artifactId>
 			<version>1.0.3</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>com.mulesoft.munit</groupId>
 			<artifactId>munit-runner</artifactId>
