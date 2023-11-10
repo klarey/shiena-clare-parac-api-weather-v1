@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<sub-flow name="invoke-soap-weather-api-subflow" doc:id="1309910b-c326-4574-9f55-5a5565e8024b" >
+		<json-logger:logger doc:name="Log Request" doc:id="cbf289ec-cb36-4f67-9fe5-d311297c1f68" config-ref="JSON_Logger_Config" message='#["invoke-soap-weather-api-subflow -- START"]' tracePoint="BEFORE_REQUEST" priority="DEBUG" category='#["esb.api-weather-v1.invoke-dummy-weather-api-subflow.http.request"]'/>
+		<wsc:consume doc:name="Invoke SOAP Weather App" doc:id="b2a73061-714a-4bd0-878a-f6b8d8e25094" config-ref="SOAP_Service_Consumer_Config" operation='#[vars.operation]'/>
+		<json-logger:logger doc:name="Log Response" doc:id="1d1a6602-d224-475d-8398-516713a93eb3" config-ref="JSON_Logger_Config" tracePoint="AFTER_REQUEST" priority="DEBUG" category='#["esb.api-weather-v1.invoke-dummy-weather-api-subflow.http.response"]' message='#["invoke-soap-weather-api-subflow -- END"]'/>
+	</sub-flow>
+</mule>

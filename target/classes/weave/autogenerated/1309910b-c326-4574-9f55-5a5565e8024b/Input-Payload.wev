@@ -1,0 +1,6 @@
+%dw 2.0
+// namespaces
+ns ns0 http://www.webserviceX.NET
+
+type auto_1309910b_c326_4574_9f55_5a5565e8024b_Input_Payload = {| ns0#GetCitiesByCountry: {| ns0#CountryName: String | Null |} |}
+

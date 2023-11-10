@@ -1,0 +1,11 @@
+error.weather.api:
+    default:
+        statusCode: "500"
+        errorCode: "SERVER_ERROR"
+        title: "Internal server error"
+        description: "An unexpected error has occurred"
+    badrequest:
+        statusCode: "400"
+        errorCode: "BAD_REQUEST"
+        title: "The request is invalid"
+        description: "The input contains invalid data"

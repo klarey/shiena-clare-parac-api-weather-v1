@@ -1,0 +1,118 @@
+#%RAML 1.0 Trait
+description: Common error responses returned by an API
+usage: Apply to all operations
+
+responses:
+  400:
+    description: Bad request
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {
+            "error": 
+            {
+              "status": "400",
+              "title": "The request could not be understood by the server due to invalid payload",
+              "code": "BAD_REQUEST",
+              "details": "The input contain invalid data: These pretzels are making me thirsty"
+            }  
+          }
+  401:
+    description: Unauthorised request
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {             
+            "error": {
+              "status": "401",
+              "title": "The server requires user authentication",
+              "code": "UNAUTHORIZED",
+              "details": "This endpoint requires all requests to be authenticated"
+            }
+          }
+  403:
+    description: Forbidden
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {             
+            "error": {
+              "status": "403",
+              "title": "Access denied.",
+              "code": "FORBIDDEN",
+              "details": "The server understood the request, but is refusing to fulfill it"
+            } 
+          }
+  404:
+    description: Resource not found
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {             
+            "error": {
+              "status": "404",
+              "title": "Resource not found",
+              "code": "NOT_FOUND",
+              "details": "The URI requested is invalid or the resource requested does not exists"
+            } 
+          }
+  405:
+    description: Method not allowed
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {
+             "error": {
+              "status": "405",
+              "title": "HTTP Method not allowed",
+              "code": "METHOD_NOT_ALLOWED",
+              "details": "The http method requested is not allowed"
+            } 
+          }
+  406:
+    description: Not acceptable
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {
+             "error": {
+              "status": "406",
+              "title": "Not accepted",
+              "code": "NOT_ACCEPTABLE",
+              "details": "The provided 'accept' http-header does not match the response type"
+            } 
+          }
+  415:
+    description: Unsupported media type
+    body:
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+          {
+             "error": {
+                "status": "415",
+                "title": "Invalid media type",
+                "code": "MEDIA_TYPE_UNSUPPORTED",
+                "details": "The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested metho"
+            } 
+          }
+  500:
+    description: Server error
+    body:      
+      application/json:
+        type: !include ../data-types/error.raml
+        example: |
+           {
+             "error": {
+                "status": "500",
+                "title": "Internal server error",
+                "code": "SERVER_ERROR",
+                "details": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+              }
+            }  

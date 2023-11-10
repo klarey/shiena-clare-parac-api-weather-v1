@@ -1,0 +1,29 @@
+#%RAML 1.0 DataType
+displayName: get-weather-response
+type: array
+items:
+  properties:
+    country:
+      type: string
+    weatherDetails:
+      type: array
+      items:
+        properties:  
+          location:
+            type: string
+          time:
+            type: string
+          wind:
+            type: string
+          visibility:
+            type: string
+          skyConditions:
+            type: string
+          temperature:
+            type: string
+          dewPoint:
+            type: string
+          relativeHumidity:
+            type: string
+          status:
+            type: string

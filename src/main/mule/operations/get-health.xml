@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="get-health-subflow" doc:id="be600987-8c37-4794-87ad-1a03766c4b93" >
+		<json-logger:logger doc:name="Log Start" doc:id="84337b07-d210-4f5c-83bd-9f57881897bc" config-ref="JSON_Logger_Config" message='#["get-health-flow - START"]' priority="DEBUG" category='#["esb.api-weather-v1.get-health.start"]'/>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	message: "Success"&#10;}]' doc:name="Set Payload" doc:id="41d38958-3899-44ce-85cc-99aa3b8d10e5" />
+		<ee:transform doc:name="Set statusCode attribute" doc:id="68c5370a-0c7d-427c-a7e0-aab8b0018c30">
+			<ee:message>
+				<ee:set-attributes><![CDATA[%dw 2.0
+output application/java
+---
+{
+	statusCode: 200
+}]]></ee:set-attributes>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="Log End" doc:id="37540971-8e43-47e5-bb3e-85236af92a2c" config-ref="JSON_Logger_Config" message='#["get-health-flow - END"]' priority="DEBUG" tracePoint="END" category='#["esb.api-weather-v1.get-health.end"]'/>
+	</sub-flow>
+</mule>

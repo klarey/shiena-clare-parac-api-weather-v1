@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="get-weather-subflow" doc:id="edeeb482-8b6e-43c5-a7eb-3a64a89f825a" >
+		<json-logger:logger doc:name="Log Start" doc:id="c361e088-2ef2-4a94-a489-3f6f1b12e9f2" config-ref="JSON_Logger_Config" message='#["get-weather-flow - START"]' priority="DEBUG" category='#["esb.api-weather-v1.get-weather.start"]'/>
+		<ee:transform doc:name="Map JSON to XML Request and Set Variable operation, country, city" doc:id="b83b1960-8a38-482d-aa96-98ad538a37f7">
+			<ee:message>
+				<ee:set-payload resource="mappings/get-weather-request.dwl" />
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="operation" ><![CDATA[%dw 2.0
+output application/java
+---
+p('dummyapi.operation.weather')]]></ee:set-variable>
+				<ee:set-variable variableName="country" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.country]]></ee:set-variable>
+				<ee:set-variable variableName="city" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.city]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Flow-ref to SOAP Weather API Subflow" doc:id="042a53a4-083f-4366-b833-4c9d9bbbf209" name="invoke-soap-weather-api-subflow" />
+		<ee:transform doc:name="Map XML to JSON Response" doc:id="c56e2912-bae9-4b95-b2d5-50cab3f64256">
+			<ee:message>
+				<ee:set-payload resource="mappings/get-weather-response.dwl" />
+				<ee:set-attributes ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	statusCode: 200
+}]]></ee:set-attributes>
+			</ee:message>
+		</ee:transform>
+		<validation:is-false doc:name="Validate isError is not true" doc:id="9c063d38-23c1-4499-b743-62ba94e4a520" expression="#[payload.isError]" message="#[payload.errorDescription]"/>
+		<json-logger:logger doc:name="Log End" doc:id="380edb6a-9ccc-4960-bb3c-ee57f987fd6c" config-ref="JSON_Logger_Config" message='#["get-weather-flow - END"]' priority="DEBUG" tracePoint="END" category='#["esb.api-weather-v1.get-weather.end"]'/>
+	</sub-flow>
+</mule>

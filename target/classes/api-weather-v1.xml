@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="api-weather-v1-main" doc:id="c90ac34e-00b9-4a12-af5a-033ce8fab3ad">
+        <http:listener config-ref="api-weather-v1-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="api-weather-v1-config" />
+        <error-handler ref="apikit-error-handler" />
+    </flow>
+    <flow name="get:\cities:api-weather-v1-config" doc:id="ee017792-f970-421e-87a5-afe155bd6c59">
+        <flow-ref doc:name="Flow-ref to get-cities-subflow" doc:id="4e4f602b-1b5b-4ed3-822a-7b8a3e20a732" name="get-cities-subflow" />
+        <error-handler ref="app-error-handler" />
+    </flow>
+    <flow name="get:\weather:api-weather-v1-config" doc:id="3419fd5e-b83e-4b3a-b478-6f319b0d7f05">
+        <flow-ref doc:name="Flow-ref to get-weather-subflow" doc:id="84a0d429-3555-4238-89cb-c4087df2acf3" name="get-weather-subflow" />
+        <error-handler ref="app-error-handler" />
+    </flow>
+    <flow name="get:\health:api-weather-v1-config" doc:id="d27a6abc-ccfa-43f9-8039-0d40613105f7">
+        <flow-ref doc:name="Flow-ref to get-health-subflow" doc:id="ae9bc3b7-1fa8-46b7-aa5c-462a2868bb99" name="get-health-subflow" />
+        <error-handler ref="app-error-handler" />
+    </flow>
+</mule>

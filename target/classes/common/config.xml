@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="59230f52-367d-4934-b05f-99cc58d70e2f" file="properties/app-properties.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="d76ffcf5-de64-4909-a48e-c8c1bef1f70f" file="properties/apikit-errors.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="a8164598-87c5-4e7c-9c8e-4c1af892285c" file="properties/app-errors.yaml" />
+	<configuration doc:name="Configuration" doc:id="5d949302-52cf-4af6-b382-00b7d1c6be15" defaultErrorHandler-ref="apikit-error-handler" />
+	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="53860163-49d1-4291-bdaf-ae69f02fed99" environment="${mule.env}" />
+	<wsc:config name="SOAP_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="07bb20d3-8fb8-4ca2-ab87-e1ed3cbcf44d" >
+		<wsc:connection wsdlLocation="wsdls/global-weather.wsdl" service="GlobalWeather" port="GlobalWeatherSoap" address="http://localhost:8080/GlobalWeather"/>
+	</wsc:config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cd46505f-f7f1-40ff-86ed-9e8c4c4226ca" basePath="${http.base}">
+		<http:request-connection host="${http.host}" port="${http.port}" />
+	</http:request-config>
+	<apikit:config name="api-weather-v1-config" api="api/api-weather-v1.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <http:listener-config name="api-weather-v1-httpListenerConfig">
+        <http:listener-connection host="${http.host}" port="${http.port}" />
+    </http:listener-config>
+    
+</mule>

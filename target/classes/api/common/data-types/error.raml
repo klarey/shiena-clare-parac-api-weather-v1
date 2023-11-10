@@ -1,0 +1,28 @@
+#%RAML 1.0 DataType
+description: The common Error structure returned by all APIs
+
+type: object
+properties: 
+  error:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Error status code
+        required: false
+        example: "400"
+      title:
+        type: string
+        description: Short description of the error
+        required: false
+        example: "The request is invalid"        
+      code:
+        type: string
+        description: Human-readable description of the error (API-specific)
+        required: false
+        example: "BAD_REQUEST"   
+      details:
+        type: string
+        description: Details of the error
+        required: false
+        example: "The input contain invalid data."

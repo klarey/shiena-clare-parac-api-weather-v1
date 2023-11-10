@@ -1,0 +1,56 @@
+[
+    {
+        "country": "Australia",
+        "weatherDetails": [
+            {
+                "location": "Melbourne",
+                "time": "11 AM",
+                "wind": "15 km per hour",
+                "visibility": "10 km",
+                "skyConditions": "sunny",
+                "temperature": "18",
+                "dewPoint": "2 C",
+                "relativeHumidity": "35",
+                "status": "Normal"
+            },
+            {
+                "location": "Amberley Aerodrome",
+                "time": "12 AM",
+                "wind": "16 km per hour",
+                "visibility": "11 km",
+                "skyConditions": "sunny",
+                "temperature": "18",
+                "dewPoint": "3 C",
+                "relativeHumidity": "36",
+                "status": "Normal"
+            }
+        ]
+    },
+    {
+        "country": "Philippines",
+        "weatherDetails": [
+            {
+                "location": "Cebu City",
+                "time": "9 AM",
+                "wind": "20 km per hour",
+                "visibility": "15 km",
+                "skyConditions": "rainy",
+                "temperature": "20",
+                "dewPoint": "2 C",
+                "relativeHumidity": "40",
+                "status": "Normal"
+            },
+            {
+                "location": "Taguig City",
+                "time": "10 AM",
+                "wind": "21 km per hour",
+                "visibility": "16 km",
+                "skyConditions": "rainy",
+                "temperature": "21",
+                "dewPoint": "3 C",
+                "relativeHumidity": "41",
+                "status": "Normal"
+            }
+        ]
+    }
+]
