@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<error-handler name="apikit-error-handler" doc:id="d9e077d7-1400-4e03-b45b-563f9cc94a9e" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="87a385b3-4008-4776-a73b-119721e72f04" type="APIKIT:BAD_REQUEST" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="74296e69-5358-45a9-9c4c-87f476b616b8" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.bad-request.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.badrequest.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.badrequest.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.badrequest.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.badrequest.description') ++ ':' ++ (error.description default '')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="888da597-88b8-4b0b-9585-cab7acf9d9b6" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="78167726-5b28-4c22-aa06-8e5349be7c5d" type="APIKIT:NOT_FOUND" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="3bddb2bd-9919-42d2-b494-46b0faa2e7d7" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.not-found.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notfound.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notfound.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notfound.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notfound.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="7269c330-8445-400a-906d-516a81d3620d" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d24cfdbb-5f02-441a-b3f2-f32780bec90d" type="APIKIT:METHOD_NOT_ALLOWED" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="45db0dd5-0288-4ed9-884b-70044a087f26" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.method-not-allowed.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.methodnotallowed.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.methodnotallowed.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.methodnotallowed.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.methodnotallowed.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="cc1692f4-bbed-4cd1-8fc0-e7f170c457f7" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d0dd0ed7-5853-47d5-8431-bb664a5835e8" type="APIKIT:NOT_ACCEPTABLE" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="8383913b-cc33-444c-8c1c-8101a4acb425" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.not-acceptable.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notacceptable.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notacceptable.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notacceptable.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notacceptable.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="a12916a4-1816-46ce-8e51-b91e77a4359f" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="84de0157-5367-40ad-9214-8b36679de8fc" type="APIKIT:UNSUPPORTED_MEDIA_TYPE" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="508a4bc8-2fc3-4671-bbeb-fdd08ecfe361" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.media-type-unsupported.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.mediatypeunsupported.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.mediatypeunsupported.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.mediatypeunsupported.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.mediatypeunsupported.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="7316f059-8050-4a03-bfea-e0a360a6914a" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2ec1c3a0-502d-4594-be2d-30da68ffd8f0" type="APIKIT:NOT_IMPLEMENTED" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="49ff7feb-3e6e-4908-bfa2-20163c89319e" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notimplemented.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notimplemented.description')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notimplemented.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.notimplemented.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.not-implemented.error']]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="80139bb6-ec1a-4a00-91f4-fd16f6f94b47" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bc8d1481-2762-4370-906e-7886f1d9399e" type="HTTP:TIMEOUT">
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="9dcb062b-89cd-4e72-8c73-61ac71a2721d">
+				<ee:variables>
+					<ee:set-variable variableName="logCategory"><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.timeout.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.timeout.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.timeout.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.timeout.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.timeout.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="6d6f7254-4769-416e-8765-f202dccfd6e4" name="set-exception-response-subflow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bc0b8f48-09d6-4737-a4ab-a139f89cb13a" type="ANY">
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="f8ddc6b5-45fb-40e3-98b2-aa7289ac6eeb">
+				<ee:message>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="logCategory"><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.unexpected-server-exception.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.default.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.default.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.default.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.apikit.default.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="a94eee52-fae8-4747-a7f3-72803e900b36" name="set-exception-response-subflow" />
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="app-error-handler" doc:id="4cfb9359-f035-4a51-8402-f6ddad66a426" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="7ad029ea-2b03-408e-8ca4-9895d71fe372" type="VALIDATION:INVALID_BOOLEAN">
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="93b9a0a4-9610-421e-b1d6-94cf2f3eea65">
+				<ee:variables>
+					<ee:set-variable variableName="logCategory"><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.badrequest.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.badrequest.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.badrequest.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.badrequest.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails"><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.badrequest.description') ++ ' : ' ++ (error.description default '')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="daa611a2-71f1-4fdc-b461-67cb9f4031e9" name="set-exception-response-subflow" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="220fb0e8-1367-4897-8174-284704cf9bb0" type="ANY" >
+			<ee:transform doc:name="Set Variable - logCategory, errorStatus, errorTitle, errorCode, errorDetails" doc:id="e82cebb6-74a8-4eea-8320-3c5ec957d51b" >
+				<ee:variables >
+					<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+p('log.category.base') ++ '.unexpected-server-exception.error']]></ee:set-variable>
+					<ee:set-variable variableName="errorStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.default.statusCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorTitle" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.default.title')]]></ee:set-variable>
+					<ee:set-variable variableName="errorCode" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.default.errorCode')]]></ee:set-variable>
+					<ee:set-variable variableName="errorDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+p('error.weather.api.default.description')]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Invoke Set Exception Response" doc:id="6f54f36f-593c-42ab-9360-293a83d9fbab" name="set-exception-response-subflow" />
+		</on-error-continue>
+	</error-handler>
+	<sub-flow name="set-exception-response-subflow" doc:id="466c64a5-e314-417d-87d5-b67bbb558209">
+		<json-logger:logger doc:name="Log Exception" doc:id="031c0840-5564-44d2-a788-e6b60917711d" config-ref="JSON_Logger_Config" message='#[error.detailedDescription]' tracePoint="EXCEPTION" priority="DEBUG" category='#["esb.api-weather-v1.set-exception-response-subflow.log-exception.error"]'>
+		</json-logger:logger>
+		<ee:transform doc:name="Map Exception Response Payload" doc:id="34949b54-c369-4b09-a46e-fd23f4502ce0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  'error': {
+		'status': vars.errorStatus,
+		'code': vars.errorCode,
+		'title': vars.errorTitle,
+		'details': vars.errorDetails
+	}
+}]]></ee:set-payload>
+				<ee:set-attributes ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	statusCode: vars.errorStatus as Number
+}]]></ee:set-attributes>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[vars.errorStatus]" doc:name="Set httpStatus" doc:id="8abab4b6-eee3-41cf-b4cd-98951ea25164" variableName="httpStatus"/>
+	</sub-flow>
+</mule>

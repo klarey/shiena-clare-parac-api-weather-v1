@@ -1,0 +1,11 @@
+%dw 2.0
+
+type auto_466c64a5_e314_417d_87d5_b67bbb558209_Output_Payload = {|
+  error: {|
+    status: Null, 
+    title: Null, 
+    code: Null, 
+    details: Null
+  |}
+|}
+

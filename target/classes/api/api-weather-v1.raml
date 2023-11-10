@@ -1,0 +1,65 @@
+#%RAML 1.0
+title: api-weather-v1
+version: v1
+protocols: [ HTTPS ]
+mediaType: application/json
+
+traits:
+  Errorable: !include common/traits/errorable.raml
+  Trackable: !include common/traits/trackable.raml
+
+types:
+  Cities: !include /common/data-types/get-cities-response.raml
+  Weather: !include /common/data-types/get-weather-response.raml
+  Health: !include /common/data-types/get-health-response.raml
+ 
+/cities:
+  get:
+    is:
+      - Errorable
+      - Trackable
+    description: Get cities by country
+    queryParameters:
+      country:
+        description: Name of country
+        type: string
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: Cities
+            example: !include /examples/get-cities-response.json
+/weather:
+  get:
+    is:
+      - Errorable
+      - Trackable
+    description: Get weather
+    queryParameters:
+      country:
+        description: Name of country
+        type: string
+        required: false
+      city:
+        description: Name of city
+        type: string
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: Weather
+            example: !include /examples/get-weather-response.json
+/health:
+  get:
+    is:
+      - Errorable
+      - Trackable
+    description: Get API health
+    responses:
+      200:
+        body:
+          application/json:
+            type: Health
+            example: !include /examples/get-health-response.json

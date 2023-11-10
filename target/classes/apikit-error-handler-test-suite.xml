@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<munit:test name="apikit-error-handler-test-suite-not-acceptable-test" doc:id="66ea47f8-3cad-4390-9a25-5c8dfed9f435" description="Test" expectedErrorType="HTTP:NOT_ACCEPTABLE">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:NOT_ACCEPTABLE" doc:id="3f103198-eb85-460a-8c81-d311421d097f" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="GET /cities" doc:id="ea23d444-5e3e-407c-ad5e-a84b24ae9152" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-http-timeout-test" doc:id="feb0d89b-1715-47d6-adab-b6e67d4f3ab7" expectedErrorType="HTTP:GATEWAY_TIMEOUT">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when HTTP:TIMEOUT" doc:id="cd555579-b4dc-4949-aaae-ac316883d270" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /cities" doc:id="cdf4018f-1f3b-4a7c-97cf-7038595bc06b" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-not-implemented-test" doc:id="34138bfe-fe5d-4839-a683-0f70c51b6160" description="Test" expectedErrorType="MULE:UNKNOWN">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:NOT_IMPLEMENTED" doc:id="9713694b-301e-48d8-90ab-a661660135ac" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /cities" doc:id="8d77df94-3219-4ccc-8021-805d4c4ea514" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-method-not-allowed-test" doc:id="15562c1a-87cd-41c7-901a-1e68c0f26239" expectedErrorType="HTTP:METHOD_NOT_ALLOWED">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:METHOD_NOT_ALLOWED" doc:id="7d435e6a-1690-43f6-acf1-40a43a72b187" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="GET /cities" doc:id="e65366a3-6c3d-4f88-8583-86d6756e9954" config-ref="HTTP_Request_configuration" path="cities"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-bad-request-test" doc:id="7dfeb7c8-0504-4a18-8b2c-051bafc60b52" description="Test" expectedErrorType="HTTP:BAD_REQUEST">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:BAD_REQUEST" doc:id="cf7a4875-9497-48c7-a835-dcfac6636e89" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /cities" doc:id="07757dc8-36d0-4ff7-baa6-c866931c6745" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-not-found-test" doc:id="98a262dc-4ebd-450e-9b6c-404266213a82" description="Test" expectedErrorType="HTTP:NOT_FOUND">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+			<munit:enable-flow-source value="api-weather-v1-main" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:NOT_FOUND" doc:id="257284e4-0d3b-47e7-803f-1a2e278fc9fe" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /cities" doc:id="f7640033-5945-4535-8129-4e30d6c401fd" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-unsupported-media-type-test" doc:id="5419ab75-a3d6-49b7-8df7-cba95a49731c" expectedErrorType="HTTP:UNSUPPORTED_MEDIA_TYPE">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when APIKIT:UNSUPPORTED_MEDIA_TYPE" doc:id="b5f6156b-4d24-4790-80ed-398852d7ff90" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="GET /cities" doc:id="f53d3e00-9ee3-40cc-ab96-3d064b8499c5" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="apikit-error-handler-test-suite-default-error-test" doc:id="e2272669-550a-4359-ba47-7b7b9586a979" expectedErrorType="HTTP:INTERNAL_SERVER_ERROR">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\cities:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when HTTP:BAD_GATEWAY" doc:id="17d8c687-842e-4cf5-b177-9e1ea67d1d96" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="api-weather-v1-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:BAD_GATEWAY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /cities" doc:id="9f9c230f-7f30-44a8-9fb0-3f7a7f89a095" config-ref="HTTP_Request_configuration" path="cities" />
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

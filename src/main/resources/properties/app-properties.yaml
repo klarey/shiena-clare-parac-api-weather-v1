@@ -1,0 +1,23 @@
+http:
+  host: "localhost"
+  base: "/api/"
+  port: "8081"
+  read.timeout: "30000"
+
+dummyapi:
+  operation:
+    cities: "GetCitiesByCountry"
+    weather: "GetWeather"
+    
+log:
+  category:
+    base: "esb.api-weather-v1"
+    
+mule:
+  env: "local"
+
+json:
+  logger:
+    application:
+      name: "api-weather"
+      version: "v1"

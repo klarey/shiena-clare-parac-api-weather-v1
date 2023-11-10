@@ -1,0 +1,15 @@
+%dw 2.0
+
+type auto_edeeb482_8b6e_43c5_a7eb_3a64a89f825a_Output_Payload = {
+  skyConditions: String, 
+  visibility: String, 
+  temperature: Number, 
+  relativeHumidity: Number, 
+  location: String, 
+  time: String, 
+  dewPoint: String, 
+  wind: String, 
+  status: String, 
+  _?: Any
+}
+

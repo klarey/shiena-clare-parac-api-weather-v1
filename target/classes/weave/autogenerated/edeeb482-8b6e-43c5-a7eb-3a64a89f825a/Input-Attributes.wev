@@ -1,0 +1,34 @@
+%dw 2.0
+
+type auto_edeeb482_8b6e_43c5_a7eb_3a64a89f825a_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|
+    "X-TransactionID"?: String, 
+    "X-TrackingID"?: String, 
+    "X-SessionID"?: String, 
+    "X-CreationTime"?: String, 
+    "X-InitialSystem"?: String, 
+    "X-InitialComponent"?: String, 
+    "X-InitialOperation"?: String
+  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    country: String, 
+    city: String
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+

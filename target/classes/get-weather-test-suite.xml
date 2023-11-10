@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="get-weather-test-suite.xml" />
+	<munit:test name="get-weather-test-suite-get-weather-subflow-test" doc:id="c1a09061-37aa-40dd-9c7c-477b2e60ab07" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\weather:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Weather App Response" doc:id="5c190989-35b2-4fbd-82bb-411147ffc72f" processor="wsc:consume" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke SOAP Weather App" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b2a73061-714a-4bd0-878a-f6b8d8e25094" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="GetWeather" attributeName="operation" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('out/mock/get-weather-mock-response.xml')]" mediaType="application/xml" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /weather" doc:id="c56301bb-7c73-447f-a1bc-4c03abef1d0a" config-ref="HTTP_Request_configuration" path="weather">
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that Status Code is 200" doc:id="be0fcc82-fb87-477f-8d61-2e28d324e9d1" is='#[MunitTools::equalTo(200)]' expression="#[attributes.statusCode]" />
+			<munit-tools:assert-equals doc:name="Assert Payload is as Expected" doc:id="58e0a8e5-dd40-4500-af5d-c694288862b5" actual="#[payload]" expected="#[readUrl('classpath://out/get-weather-response.json')]" />
+			<munit-tools:verify-call doc:name="Verify call to Log End" doc:id="be231bf9-3893-4dd2-a16f-720e50d2fee5" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Log End" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="380edb6a-9ccc-4960-bb3c-ee57f987fd6c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-weather-test-suite-get-weather-from-specific-country-subflow-test" doc:id="8aafca47-00d0-4a96-ade0-9ce8b549d522" >
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\weather:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Weather App Response" doc:id="3e1146e4-c80d-43c3-9415-415e1e4548ee" processor="wsc:consume" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke SOAP Weather App" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b2a73061-714a-4bd0-878a-f6b8d8e25094" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="GetWeather" attributeName="operation" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('out/mock/get-weather-mock-response.xml')]" mediaType="application/xml" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /weather" doc:id="415115b3-5e8e-49d0-8401-d47f204dd0de" config-ref="HTTP_Request_configuration" path="weather" >
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"country" : "Australia"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that Status Code is 200" doc:id="29367a42-ef1a-4d41-8abe-31a76c0b330b" is="#[MunitTools::equalTo(200)]" expression="#[attributes.statusCode]" />
+			<munit-tools:assert-equals doc:name="Assert Payload is as Expected" doc:id="616cdb4a-14c1-4e6f-8f7c-3edd270ce455" actual="#[payload]" expected="#[readUrl('classpath://out/get-weather-from-specific-country-response.json')]" />
+			<munit-tools:verify-call doc:name="Verify call to Log End" doc:id="8b673f7c-b0e5-43ef-bee3-16bcdb5edad0" processor="json-logger:logger" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Log End" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="380edb6a-9ccc-4960-bb3c-ee57f987fd6c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-weather-test-suite-get-weather-from-specific-city-subflow-test" doc:id="ae55bef9-ec46-408f-bc0b-b897fb79e572" >
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\weather:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Weather App Response" doc:id="b70d394b-e25d-49c6-9029-9f42f6504669" processor="wsc:consume" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke SOAP Weather App" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b2a73061-714a-4bd0-878a-f6b8d8e25094" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="GetWeather" attributeName="operation" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('out/mock/get-weather-mock-response.xml')]" mediaType="application/xml" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /weather" doc:id="b5543276-7738-4e98-9940-715beadd49fc" config-ref="HTTP_Request_configuration" path="weather" >
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"city" : "Melbourne"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that Status Code is 200" doc:id="88ad74e3-5e93-4c7d-bc88-d1ecbad2220c" is="#[MunitTools::equalTo(200)]" expression="#[attributes.statusCode]" />
+			<munit-tools:assert-equals doc:name="Assert Payload is as Expected" doc:id="b4504593-2ba9-4f69-9e6d-a4277ae4a138" actual="#[payload]" expected="#[readUrl('classpath://out/get-weather-from-specific-city-response.json')]" />
+			<munit-tools:verify-call doc:name="Verify call to Log End" doc:id="5d376caa-07b2-485d-9488-3e9a6d7469a1" processor="json-logger:logger" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Log End" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="380edb6a-9ccc-4960-bb3c-ee57f987fd6c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-weather-test-suite-get-weather-from-specific-city-in-country-subflow-test" doc:id="5ff715ce-ec21-449f-b250-c87579952b44" >
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\weather:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Weather App Response" doc:id="398f96f8-7e44-4167-8802-0ec6479edf00" processor="wsc:consume" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke SOAP Weather App" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b2a73061-714a-4bd0-878a-f6b8d8e25094" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="GetWeather" attributeName="operation" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('out/mock/get-weather-mock-response.xml')]" mediaType="application/xml" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /weather" doc:id="abe30930-ca2f-42e7-aa80-9fe7caf7b4fb" config-ref="HTTP_Request_configuration" path="weather" >
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"country" : "Australia",
+	"city" : "Melbourne"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that Status Code is 200" doc:id="c9cda1ef-3214-4ef8-adb2-3b9d4484e6a3" is="#[MunitTools::equalTo(200)]" expression="#[attributes.statusCode]" />
+			<munit-tools:assert-equals doc:name="Assert Payload is as Expected" doc:id="665a4fee-27d3-40c7-bfea-d2bec295c02a" actual="#[payload]" expected="#[readUrl('classpath://out/get-weather-from-specific-city-response.json')]" />
+			<munit-tools:verify-call doc:name="Verify call to Log End" doc:id="24de240d-1a66-4287-a76e-5d48903c994d" processor="json-logger:logger" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Log End" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="380edb6a-9ccc-4960-bb3c-ee57f987fd6c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-weather-test-empty-collection-suite-test" doc:id="172b47b9-925a-4cec-9bb5-20c862fd1f81" >
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="api-weather-v1-main" />
+			<munit:enable-flow-source value="get:\weather:api-weather-v1-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Weather App Response" doc:id="4395a442-e3d0-4c99-96f9-dae11beb9911" processor="wsc:consume" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke SOAP Weather App" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b2a73061-714a-4bd0-878a-f6b8d8e25094" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="GetWeather" attributeName="operation" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('out/mock/get-weather-empty-collection-mock-response.xml')]" mediaType="application/xml" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="GET /weather" doc:id="6ea24a51-338c-4ef2-89dd-759fc9a0577c" config-ref="HTTP_Request_configuration" path="weather" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that Status Code is 200" doc:id="f931f154-ab52-4c9b-aadf-07ab22a55522" expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" />
+			<munit-tools:assert-equals doc:name="Assert Payload is as Expected" doc:id="04acd152-7827-4c06-8a9c-8c5345efadf7" actual="#[payload]" expected="#[[]]" />
+			<munit-tools:verify-call doc:name="Verify call to Log End" doc:id="1f601098-0a3f-4949-8c81-9c5f56848279" processor="json-logger:logger" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Log End" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="380edb6a-9ccc-4960-bb3c-ee57f987fd6c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+</mule>
